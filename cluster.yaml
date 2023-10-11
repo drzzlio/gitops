@@ -1,0 +1,23 @@
+projectId: ${project.projectId}
+zone: us-central1-a
+cluster:
+  name: playground
+  description: AI's Playground Cluster
+  workloadIdentityConfig:
+    workloadPool: ${project.projectId}.svc.id.goog
+  addonsConfig:
+    configConnectorConfig:
+      enabled: true
+  nodePools:
+  - name: kiddie-pool
+    config:
+      machineType: e2-standard-2
+      preemptible: true
+    initialNodeCount: 2
+    nodeManagement:
+      autoUpgrade: true
+      autoRepair: true
+    autoscaling:
+      enabled: true
+      minNodeCount: 2
+      maxNodeCount: 5

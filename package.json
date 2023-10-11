@@ -1,0 +1,27 @@
+{
+  "name": "gitops",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./reconcile.js | roarr"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@google-cloud/billing": "^4.0.2",
+    "@google-cloud/container": "^5.2.0",
+    "@google-cloud/resource-manager": "^5.0.1",
+    "@google-cloud/service-usage": "^3.0.1",
+    "@kubernetes/client-node": "github:joshperry/k8s-node-client#dist-1.x",
+    "@roarr/middleware-serialize-error": "^1.0.0",
+    "eslint": "^8.49.0",
+    "js-yaml": "^4.1.0",
+    "roarr": "^7.15.1"
+  },
+  "devDependencies": {
+    "@roarr/cli": "^5.12.3"
+  }
+}

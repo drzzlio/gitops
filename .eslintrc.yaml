@@ -1,0 +1,8 @@
+root: true
+extends:
+  - eslint:recommended
+env:
+  node: true
+  es2023: true
+parserOptions:
+  sourceType: module
