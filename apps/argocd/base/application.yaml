@@ -6,9 +6,6 @@ metadata:
 spec:
   project: default
 
-  source:
-    path: clusters/primary
-
   destination:
     namespace: argocd
 
