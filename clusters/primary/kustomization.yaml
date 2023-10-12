@@ -1,0 +1,9 @@
+resources:
+- application.yaml
+- ../../apps/argocd/overlays/primary/application
+
+patches:
+- path: application-dest.patch.yaml
+  target:
+    group: argoproj.io
+    kind: Application

@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: not-used
+spec:
+  source:
+    repoURL: https://github.com/drzzlio/gitops
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc

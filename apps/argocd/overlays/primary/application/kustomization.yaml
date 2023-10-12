@@ -1,0 +1,5 @@
+resources:
+- ../../../base/application.yaml
+
+patches:
+  - path: application.patch.yaml
