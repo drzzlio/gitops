@@ -8,9 +8,12 @@ spec:
 
   destination:
     namespace: argocd
+    server: https://kubernetes.default.svc
 
   source:
     path: clusters/primary
+    repoURL: https://github.com/drzzlio/gitops
+    targetRevision: HEAD
 
   syncPolicy:
     automated:
