@@ -3,3 +3,6 @@ resources:
 - ../../base/v2.8.4
 - ../../mixins/add-gitops-repo
 - ../../mixins/add-namespace
+
+components:
+- ../../mixins/kustomize-options

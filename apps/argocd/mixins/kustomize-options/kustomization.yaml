@@ -1,0 +1,4 @@
+patches:
+- path: argocd-cm.patch.yaml
+
+kind: Component
