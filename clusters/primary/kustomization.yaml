@@ -3,7 +3,7 @@ resources:
 - ../../apps/argocd/overlays/primary/application
 
 patches:
-- path: application-dest.patch.yaml
+- path: applications.patch.yaml
   target:
     group: argoproj.io
     kind: Application
