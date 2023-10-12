@@ -1,4 +1,5 @@
 resources:
+- ../../apps/httpbin/application.yaml
 - ../../apps/argocd/overlays/primary/application
 
 patches:
