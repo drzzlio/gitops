@@ -8,6 +8,8 @@ cluster:
   addonsConfig:
     configConnectorConfig:
       enabled: true
+  clusterAutoscaling:
+    autoscalingProfile: OPTIMIZE_UTILIZATION
   nodePools:
   - name: kiddie-pool
     config:
