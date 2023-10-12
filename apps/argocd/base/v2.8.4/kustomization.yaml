@@ -1,2 +1,5 @@
 resources:
 - install.yaml
+
+patches:
+- path: argocd-cm.patch.yaml
