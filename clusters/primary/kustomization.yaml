@@ -1,3 +1,5 @@
+resources:
+- ../../apps/argocd/overlays/primary/application
 
 patches:
 - path: applications.patch.yaml
