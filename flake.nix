@@ -28,6 +28,8 @@
           };
 
           packages = with pkgs;[
+            k9s
+            kubectl
             kustomize
             kubernetes-helm
             (google-cloud-sdk.withExtraComponents [
