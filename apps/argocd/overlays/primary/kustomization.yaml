@@ -1,7 +1,6 @@
 namespace: argocd
 resources:
 - ../../base
-- namespace.yaml
 - repo.yaml
 
 patches:
