@@ -44,9 +44,9 @@ export default async function reconcile(project, cluster) {
   process.env.KUBECONFIG = './kubeconfig.yaml'
 
   try {
-    await run('injected argo', 'kustomize build apps/argocd/overlays/primary | kubectl apply -f-')
+    await run('injected argo', 'kustomize build ../apps/argocd/overlays/primary | kubectl apply -f-')
     await run('argo available', 'kubectl wait --for=condition=available deployments --all -n argocd')
-    await run('deployed appoapp', 'kubectl apply -f clusters/primary/appoapp.yaml')
+    await run('deployed appoapp', 'kubectl apply -f ../clusters/primary/appoapp.yaml')
   } catch(error) {
     log({error: serializeError(error)}, 'Error reconciling bootstrap')
   }
