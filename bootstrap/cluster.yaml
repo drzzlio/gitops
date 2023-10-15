@@ -1,5 +1,5 @@
 projectId: ${project.projectId}
-zone: us-west3-a
+zone: us-west3-b
 cluster:
   name: primary
   description: Primary Cluster
@@ -10,6 +10,9 @@ cluster:
       enabled: true
   autoscaling:
     autoscalingProfile: OPTIMIZE_UTILIZATION
+  monitoringConfig:
+    managedPrometheusConfig:
+      enabled: false
   nodePools:
   - name: kiddie-pool
     config:
