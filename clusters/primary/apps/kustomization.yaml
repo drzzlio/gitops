@@ -2,3 +2,9 @@ namespace: argocd
 resources:
 - argocd.yaml
 - httpbin.yaml
+
+patches:
+- path: base.patch.yaml
+  target:
+    group: argoproj.io
+    kind: Application
