@@ -1,5 +1,5 @@
 projectId: ${project.projectId}
-zone: us-west3-b
+zone: us-west3-a
 cluster:
   name: primary
   description: Primary Cluster
@@ -13,11 +13,15 @@ cluster:
   monitoringConfig:
     managedPrometheusConfig:
       enabled: false
+  ipAllocationPolicy:
+    stackType: IPV4_IPV6
   nodePools:
   - name: kiddie-pool
     config:
       machineType: e2-standard-2
-      preemptible: true
+      diskType: pd-ssd
+      diskSizeGb: 50
+      spot: true
     initialNodeCount: 2
     nodeManagement:
       autoUpgrade: true
