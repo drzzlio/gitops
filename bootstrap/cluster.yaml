@@ -1,5 +1,5 @@
 projectId: ${project.projectId}
-zone: us-west3-a
+zone: us-central1-a
 cluster:
   name: primary
   description: Primary Cluster
@@ -13,8 +13,6 @@ cluster:
   monitoringConfig:
     managedPrometheusConfig:
       enabled: false
-  ipAllocationPolicy:
-    stackType: IPV4_IPV6
   nodePools:
   - name: kiddie-pool
     config:
