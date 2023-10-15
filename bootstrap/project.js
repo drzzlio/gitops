@@ -13,7 +13,7 @@ const svcclient = new ServiceUsageClient()
 const billclient = new CloudBillingClient()
 
 async function enableService(name) {
-  log(`Enabling service ${name}`)
+  log({name}, 'Enabling service')
   const [op] = await svcclient.enableService({ name })
   await op.promise()
 }
@@ -59,7 +59,7 @@ async function updateProject(project) {
   const [op] = await client.updateProject({ project })
   const [resp] = await op.promise()
 
-  enableServices(resp.projectId)
+  await enableServices(resp.projectId)
 
   log({project: resp}, `Updated project ${resp.name}`)
   return resp
