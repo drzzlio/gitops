@@ -3,6 +3,7 @@ kind: Application
 metadata:
   name: not-used
 spec:
+  project: default
   source:
     repoURL: https://github.com/drzzlio/gitops
     targetRevision: HEAD

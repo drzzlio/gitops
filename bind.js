@@ -45,7 +45,7 @@ export default async function reconcile(project, cluster) {
 
   try {
     await run(`kustomize build apps/argocd/overlays/primary | kubectl apply -f-`)
-    await run(`kubectl apply -f clusters/primary/application.yaml`)
+    await run(`kubectl apply -f clusters/primary/appoapp.yaml`)
   } catch(error) {
     log({error: serializeError(error)}, 'Error reconciling bootstrap')
   }
