@@ -1,8 +1,8 @@
 projectId: ${project.projectId}
-zone: us-central1-a
+zone: us-west3-a
 cluster:
-  name: playground
-  description: AI's Playground Cluster
+  name: primary
+  description: Primary Cluster
   workloadIdentityConfig:
     workloadPool: ${project.projectId}.svc.id.goog
   addonsConfig:
