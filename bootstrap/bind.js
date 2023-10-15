@@ -7,7 +7,7 @@ import yaml from 'js-yaml'
 import { Roarr } from 'roarr'
 import serializeError from 'serialize-error';
 
-import { appname, argourl } from './consts.js'
+import { appname } from './consts.js'
 
 const log = Roarr.child({ appname, subsys: 'bind' })
 
@@ -30,9 +30,9 @@ class LooseApiClient {
   }
 }
 
-async function run(cmd) {
+async function run(opdesc, cmd) {
   let {stdout, stderr} = await pexec(cmd)
-  log({stdout, stderr}, 'from kustomize pipe')
+  log({stdout, stderr}, opdesc)
 }
 
 export default async function reconcile(project, cluster) {
@@ -44,8 +44,9 @@ export default async function reconcile(project, cluster) {
   process.env.KUBECONFIG = './kubeconfig.yaml'
 
   try {
-    await run(`kustomize build apps/argocd/overlays/primary | kubectl apply -f-`)
-    await run(`kubectl apply -f clusters/primary/appoapp.yaml`)
+    await run('injected argo', 'kustomize build apps/argocd/overlays/primary | kubectl apply -f-')
+    await run('argo available', 'kubectl wait --for=condition=available deployments --all -n argocd')
+    await run('deployed appoapp', 'kubectl apply -f clusters/primary/appoapp.yaml')
   } catch(error) {
     log({error: serializeError(error)}, 'Error reconciling bootstrap')
   }
