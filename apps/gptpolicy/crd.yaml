@@ -1,0 +1,54 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: gptpolicies.drzzl.io
+spec:
+  group: drzzl.io
+  versions:
+    - name: v1
+      served: true
+      storage: true
+  scope: Namespaced
+  names:
+    plural: gptpolicies
+    singular: gptpolicy
+    kind: GPTPolicy
+    shortNames:
+      - gptp
+  preserveUnknownFields: false
+  validation:
+    openAPIV3Schema:
+      type: object
+      properties:
+        spec:
+          type: object
+          properties:
+            description:
+              type: string
+              description: "Description of the desired jspolicy functionality."
+          required:
+            - description
+        status:
+          type: object
+          properties:
+            conditions:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    description: "Type of the condition (e.g., 'Ready', 'Error')."
+                  status:
+                    type: string
+                    description: "Status of the condition (e.g., 'True', 'False')."
+                  reason:
+                    type: string
+                    description: "Machine-readable reason for the condition."
+                  message:
+                    type: string
+                    description: "Human-readable message indicating details about the condition."
+                  lastTransitionTime:
+                    type: string
+                    format: date-time
+                    description: "Timestamp when the condition last changed."
