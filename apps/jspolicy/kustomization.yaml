@@ -1,0 +1,10 @@
+namespace: jspolicy
+helmGlobals:
+  chartHome: .
+helmCharts:
+- name: v0.2.2
+  includeCRDs: true
+  releaseName: main
+  valuesInline:
+    serviceAccount:
+      name: jspolicy

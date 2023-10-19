@@ -1,6 +1,7 @@
 namespace: argocd
 resources:
 - argocd.yaml
+- jspolicy.yaml
 - httpbin.yaml
 
 patches:

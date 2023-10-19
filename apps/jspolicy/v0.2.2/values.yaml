@@ -1,0 +1,104 @@
+# Default values for jspolicy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+env: {}
+
+## Optional array of imagePullSecrets containing private registry credentials
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# - name: secretName
+
+readinessProbe:
+  enabled: true
+
+livenessProbe:
+  enabled: true
+
+jspolicy:
+  command: 
+  - /jspolicy
+  args: []
+  resources:
+    limits:
+      memory: 1024Mi
+      cpu: "2"
+    requests:
+      memory: 128Mi
+      cpu: 50m
+
+policyReports:
+  enabled: false
+  maxEvents: 3
+
+serviceAccount:
+  name: serviceaccount
+  create: true
+  clusterRole: cluster-admin
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 443
+  targetPort: 8443
+  
+webhook:
+  create: true
+  
+# Prometheus Service Monitor Configuration
+serviceMonitor:
+  enabled: false
+  jobLabel: jspolicy
+  path: /metrics
+  interval: 60s
+  scrapeTimeout: 30s
+  labels: {}
+  
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - all
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+
+priorityClassName: ""
+
+##  Affinity for pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+## Node labels for pods assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+## Tolerations for pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+podDisruptionBudget:
+  ## Specifies whether a Pod disruption budget should be created
+  ##
+  create: false
+  minAvailable: 1
+  # maxUnavailable: 1
+
+# Create policies as part of the chart
+# policies is a map:
+#   the key is the name of the policy
+#   the value is the policy spec
+policies: {}
+#  "block-default-namespace.example.com" :
+#    operations: ["CREATE"]
+#    resources: ["*"]
+#    scope: Namespaced
+#    javascript: |
+#      if (request.namespace === "default") {
+#        deny("Creation of resources within the default namespace is not allowed!");
+#      }

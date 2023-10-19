@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "jspolicy.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "jspolicy.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "jspolicy.fullname" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "jspolicy.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      priorityClassName: {{ .Values.priorityClassName }}
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: {{ template "jspolicy.serviceAccountName" . }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity: {{- include "jspolicy.render" ( dict "value" .Values.affinity "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- include "jspolicy.render" ( dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- include "jspolicy.render" (dict "value" .Values.tolerations "context" .) | nindent 8 }}
+      {{- end }}
+      containers:
+      - ports:
+        - name: webhook
+          containerPort: {{ .Values.service.targetPort }}
+          protocol: TCP
+        command:
+        {{- range $f := .Values.jspolicy.command }}
+        - {{ $f | quote }}
+        {{- end }}
+        args:
+        {{- range $f := .Values.jspolicy.args }}
+        - {{ $f | quote }}
+        {{- end }}
+        {{- if .Values.image }}
+        image: "{{ .Values.image }}"
+        {{- else }}
+        image: "loftsh/jspolicy:{{ .Chart.Version }}"
+        {{- end }}
+        name: jspolicy
+        securityContext:
+{{ toYaml .Values.securityContext | indent 10 }}
+        env:
+          {{- range $key, $value := .Values.env }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- if .Values.policyReports.enabled }}
+          - name: ENABLE_POLICY_REPORTS
+            value: "true"
+          {{- if .Values.policyReports.maxEvents }}
+          - name: POLICY_REPORT_MAX_EVENTS
+            value: {{ .Values.policyReports.maxEvents | quote }}
+          {{- end }}
+          {{- end }}
+        {{- if .Values.livenessProbe.enabled }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9080
+          failureThreshold: 10
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 9080
+          failureThreshold: 10
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        {{- end }}
+        resources:
+{{ toYaml .Values.jspolicy.resources | indent 10 }}
