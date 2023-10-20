@@ -11,4 +11,4 @@ spec:
   - CREATE
   - DELETE
   javascript: |
-    print('hi')
+    print(`hi ${request.operation}`)
