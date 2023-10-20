@@ -12,3 +12,6 @@ spec:
   - DELETE
   javascript: |
     print(`hi ${request.operation}`)
+    if(request.operation === 'DELETE') {
+      print(`deleting ${request.oldObject.metadata.name}`)
+    }
