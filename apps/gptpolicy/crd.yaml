@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   name: gptpolicies.drzzl.io
 spec:
-  group: drzzl.io
+  group: gpt.drzzl.io
   scope: Namespaced
   names:
     plural: gptpolicies
