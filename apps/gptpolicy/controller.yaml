@@ -8,4 +8,4 @@ spec:
   - gptpolicies
   scope: Namespaced
   javascript: |
-    console.log('hi')
+    print('hi')
