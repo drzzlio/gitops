@@ -1,5 +1,5 @@
 apiVersion: gpt.drzzl.io/v1
-kind: Policy
+kind: GPTPolicy
 metadata:
   name: no-prod-pods-in-test-ns
 spec:
