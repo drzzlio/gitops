@@ -1,7 +1,7 @@
 apiVersion: policy.jspolicy.com/v1beta1
 kind: JsPolicy
 metadata:
-  name: gptpolicy-controller
+  name: gptpolicy-controller.drzzl.io
 spec:
   type: Controller
   resources:
