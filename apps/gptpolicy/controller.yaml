@@ -7,5 +7,9 @@ spec:
   resources:
   - gptpolicies
   scope: Namespaced
+  operations:
+  - CREATE
+  - UPDATE
+  - DELETE
   javascript: |
     print('hi')
