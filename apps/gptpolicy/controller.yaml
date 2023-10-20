@@ -18,8 +18,10 @@ spec:
       if(request.object) {
         // TODO: Delete the owned jspolicy instance
         print(`removing owned jspolicy instance for ${request.name}`)
-        allow()
       }
+
+      // Done with delete handling, jump out
+      allow()
     }
 
     //TODO: Handle creation/update of jspolicy instance
