@@ -24,11 +24,16 @@ spec:
       allow()
     }
 
-    //TODO: Handle creation/update of jspolicy instance
     print(`handling creation of jspolicy for ${request.name}`)
 
     // Check if the gpt.drzzl.io/genversion annotation matches resourceVersion,
     // if not then we need to create or update the owned jspolicy
     if(request.object.metadata.annotations?.['gpt.drzl.io/genversions'] !== request.object.metadata.resourceVersion) {
-      print(`we need to create the jspolicy`)
+      print(`generating jspolicy code`)
+      // make a call to GPT API
+      // update genversions annotation
+
+      allow()
     }
+
+    print(`no action taken in reconciling ${request.name}`)
