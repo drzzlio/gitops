@@ -1,0 +1,6 @@
+apiVersion: example.com/v1
+kind: GPTPolicy
+metadata:
+  name: no-prod-pods-in-test-ns
+spec:
+  description: "Create a policy that denies pods with the label 'env=prod' in the 'test' namespace."

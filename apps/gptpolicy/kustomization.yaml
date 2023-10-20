@@ -1,3 +1,4 @@
 resources:
 - crd.yaml
 - controller.yaml
+- testpolicy.yaml
