@@ -11,7 +11,10 @@ spec:
   - CREATE
   - DELETE
   javascript: |
-    print(`hi ${request.operation}`)
+    print(`got event ${JSON.stringify(request)}`)
     if(request.operation === 'DELETE') {
-      print(`deleting ${JSON.stringify(request)}`)
+      // The first delete with a finalizer has an object
+      if(request.object) {
+        // TODO: Delete the owned jspolicy instance
+      }
     }
