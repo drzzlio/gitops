@@ -1,0 +1,11 @@
+apiVersion: policy.jspolicy.com/v1beta1
+kind: JsPolicy
+metadata:
+  name: gptpolicy-controller
+spec:
+  type: Controller
+  resources:
+  - gptpolicies
+  scope: Namespaced
+  javascript: |
+    console.log('hi')
