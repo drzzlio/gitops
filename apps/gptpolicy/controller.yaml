@@ -13,27 +13,30 @@ spec:
   javascript: |
     print(`got event ${JSON.stringify(request)}`)
 
+    const log = msg => print(`${request.name}: ${msg}`)
+
     if(request.operation === 'DELETE') {
       // The first delete with a finalizer has an object
       if(request.object) {
-        // TODO: Delete the owned jspolicy instance
-        print(`removing owned jspolicy instance for ${request.name}`)
+        //TODO: Delete the owned jspolicy instance
+        log(`removing owned jspolicy instance`)
+      } else {
+        log(`not handling delete event`)
       }
 
       // Done with delete handling, jump out
       allow()
     }
 
-    print(`handling creation of jspolicy for ${request.name}`)
-
+    log(`handling creation event`)
     // Check if the gpt.drzzl.io/genversion annotation matches resourceVersion,
     // if not then we need to create or update the owned jspolicy
     if(request.object.metadata.annotations?.['gpt.drzl.io/genversions'] !== request.object.metadata.resourceVersion) {
-      print(`generating jspolicy code`)
-      // make a call to GPT API
-      // update genversions annotation
+      log(`generating jspolicy code`)
+      //TODO: make a call to GPT API
+      //TODO: update genversions annotation
 
       allow()
     }
 
-    print(`no action taken in reconciling ${request.name}`)
+    log(`no action taken`)
