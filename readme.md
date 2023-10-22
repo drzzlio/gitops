@@ -1,11 +1,12 @@
 # GitOps Repo
 
 The idea here is that we use google APIs to create the project and initial
-cluster, then use config connector to manage all other resources in the project.
+cluster, then use config connector to manage any other cloud provider resources
+in the project.
 
-The process so far is to run `node gcp/project.js`, `gcp/cluster.js`, then
-`gcp/bind.js`. This is currently highly GCP specific, though it'd be
-interesting to support multiple providers.
+The process so far is to run `npm start` in the `bootstrap` dir. This is
+currently highly GCP specific, though it'd be interesting to support multiple
+providers.
 
 ## Secrets
 
@@ -14,8 +15,8 @@ There is not yet a strategy for dealing with secrets. There are a number of opti
 ## Authentication
 
 The scripts expect you to be authenticated with `gcloud` in order to create the
-project and cluster. You must also have a billing account setup to be bound to
-the project.
+project and cluster and then authenticate with it. You must also have a billing
+account setup to be bound to the project.
 
 ## Project
 
@@ -33,23 +34,25 @@ of the google API's [schema for clusters](https://cloud.google.com/kubernetes-en
 When the cluster yaml is read by the script, it is evaluated as a template
 string so that properties of variables like `project` can be pulled in.
 
-The cluster runs preemptible nodes, and has workload ID and Config Connector enabled.
+The cluster runs spot instances, and has workload ID and Config Connector enabled.
 
-It's expected that this repo evolves to support a number of projects and clusters.
+It's expected that this repo evolves to support a number of projects and
+clusters. Besides the primary cluster, though, additional clusters would be
+created with kcc resources after bootstrap.
 
 ## GitOps Bind
 
 Once the cluster is up and running, we can deploy our gitops operator and have
-the git repo take control of ops from here on. We may want to chain this onto
-the cluster creation scripts. We may want to chain _all_ the bootstrap scripts.
+the git repo take control of ops from here on. We'll want to create a KCC
+Project resource for the bootstrap project to take control of it.
 
-For mutli-cluster support we'll want to make it easy to run this against any 
-cluster. 
+This first applies the output of `kustomize build apps/argocd/overlays/primary`
+to install argocd. It then applies `kustomize build clusters/primary/appoapp.yaml`
+to install the app-of-apps that will eventually converge on having all of our
+applications configured and installed.
 
 Do we want to just shell out to `kubectl`, or use our own client library to
 talk to the cluster?
-
-We'll want to create a KCC Project resource for the bootstrap project.
 
 ## Local Config Mgmt Cluster
 Decided: NO
