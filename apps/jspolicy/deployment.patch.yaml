@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main-jspolicy
+spec:
+  template:
+    spec:
+      containers:
+      - name: jspolicy
+        envFrom:
+        - secretRef:
+            name: jspolicy

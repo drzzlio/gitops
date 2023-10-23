@@ -8,3 +8,6 @@ helmCharts:
   valuesInline:
     serviceAccount:
       name: jspolicy
+
+patches:
+- path: deployment.patch.yaml
