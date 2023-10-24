@@ -1,6 +1,6 @@
 apiVersion: gpt.drzzl.io/v1
 kind: GPTPolicy
 metadata:
-  name: no-prod-pods-in-test-ns
+  name: no-prod-pods-in-test-ns.drzzl.io
 spec:
   description: "Create a policy that denies pods with the label 'env=prod' in the 'test' namespace."
