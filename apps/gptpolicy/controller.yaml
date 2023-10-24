@@ -12,9 +12,10 @@ spec:
   - DELETE
   timeoutSeconds: 30
   javascript: |
+    import util from 'util'
     const AIURL = 'https://api.openai.com/v1/chat/completions'
     const AIKEY = env('OPENAI_API_KEY')
-    print(`got event ${JSON.stringify(request)}`)
+    print(`got event ${util.inspect(request, undefined, 10)}`)
 
     const log = msg => print(`${request.name}: ${msg}`)
 
@@ -132,6 +133,7 @@ spec:
       }
 
       try {
+        log('calling GPT')
         const resp = fetchSync(AIURL, {
           method: 'POST',
           headers: {
@@ -148,19 +150,22 @@ spec:
         }
       } catch(err) {
         log(`error making policy: ${err}`)
-        requeue()
+        requeue('requeuing for error calling gpt')
       }
         
-      // TODO: Set genversion attribute on the GPTPolicy instance
-      try {
-        const meta = request.object.metadata
-        meta.attributes = {...meta.attributes, 'gpt.drzzl.io/genversion': meta.resourceVersion}
-        update(request.object)
-      } catch(err) {
+      // Set genversion attribute on the GPTPolicy instance
+      log('updating genversion')
+      const meta = request.object.metadata
+      meta.attributes = {...meta.attributes, 'gpt.drzzl.io/genversion': meta.resourceVersion}
+      const upobj = update(request.object)
+
+      if(!upobj.ok) {
         log(`error updating genversion: ${err.message}`)
+        return
       }
 
       // Done with creation handling, bye
+      log('done with create reconciliation')
       allow()
     }
 
