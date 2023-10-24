@@ -87,7 +87,7 @@ spec:
           apiVersion: gpt.drzzl.io/v1
           kind: GPTPolicy
           name: ${request.name}
-          uid: request.object.metadata.uid
+          uid: ${request.object.metadata.uid}
           controller: true
       description:
           ${description}
