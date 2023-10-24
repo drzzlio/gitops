@@ -161,7 +161,7 @@ spec:
 
       if(!upobj.ok) {
         log(`error updating genversion: ${err.message}`)
-        return
+        allow()
       }
 
       // Done with creation handling, bye
