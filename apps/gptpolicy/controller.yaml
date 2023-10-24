@@ -153,10 +153,10 @@ spec:
         requeue('requeuing for error calling gpt')
       }
         
-      // Set genversion attribute on the GPTPolicy instance
+      // Set genversion annotation on the GPTPolicy instance
       log('updating genversion')
       const meta = request.object.metadata
-      meta.attributes = {...meta.attributes, 'gpt.drzzl.io/genversion': meta.resourceVersion}
+      meta.annotations = {...meta.annotations, 'gpt.drzzl.io/genversion': meta.resourceVersion}
       const upobj = update(request.object)
 
       if(!upobj.ok) {
