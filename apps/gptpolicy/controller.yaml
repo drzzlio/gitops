@@ -14,6 +14,9 @@ spec:
   javascript: |
     const AIURL = 'https://api.openai.com/v1/chat/completions'
     const AIKEY = env('OPENAI_API_KEY')
+
+    const GENVERSION_ANNOT = 'gpt.drzzl.io/genversion'
+
     print(`got event ${JSON.stringify(request)}`)
 
     const log = msg => print(`${request.name}: ${msg}`)
@@ -34,7 +37,7 @@ spec:
     log(`handling creation event`)
     // Check if the gpt.drzzl.io/genversion annotation matches resourceVersion,
     // if not then we need to create or update the owned jspolicy
-    if(request.object.metadata.annotations?.['gpt.drzl.io/genversions'] !== request.object.metadata.resourceVersion) {
+    if(request.object.metadata.annotations?.[GENVERSION_ANNOT] !== request.object.metadata.resourceVersion) {
       log(`generating jspolicy code`)
 
       const description = request.object.spec.description
@@ -154,9 +157,9 @@ spec:
       }
         
       // Set genversion annotation on the GPTPolicy instance
-      log('updating genversion')
+      log('updating genversion annotation')
       const meta = request.object.metadata
-      meta.annotations = {...meta.annotations, 'gpt.drzzl.io/genversion': meta.resourceVersion}
+      meta.annotations = {...meta.annotations, [GENVERSION_ANNOT]: meta.resourceVersion}
       const upobj = update(request.object)
 
       if(!upobj.ok) {
