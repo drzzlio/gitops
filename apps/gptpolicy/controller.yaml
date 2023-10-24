@@ -36,7 +36,7 @@ spec:
     if(request.object.metadata.annotations?.['gpt.drzl.io/genversions'] !== request.object.metadata.resourceVersion) {
       log(`generating jspolicy code`)
 
-      const description = request.object.metadata.spec.description
+      const description = request.object.spec.description
 
       const payload = {
         model: 'gpt-4',
