@@ -6,7 +6,7 @@ spec:
   type: Controller
   resources:
   - gptpolicies
-  scope: Namespaced
+  scope: Cluster
   operations:
   - CREATE
   - DELETE
@@ -15,6 +15,7 @@ spec:
     const AIURL = 'https://api.openai.com/v1/chat/completions'
     const AIKEY = env('OPENAI_API_KEY')
 
+    // TODO: move state tracking to the status subresource
     const LASTAPPLIED_ANNOT = 'gpt.drzzl.io/last-applied-description'
 
     print(`got event ${JSON.stringify(request)}`)
