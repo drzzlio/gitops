@@ -12,10 +12,9 @@ spec:
   - DELETE
   timeoutSeconds: 30
   javascript: |
-    import util from 'util'
     const AIURL = 'https://api.openai.com/v1/chat/completions'
     const AIKEY = env('OPENAI_API_KEY')
-    print(`got event ${util.inspect(request, undefined, 10)}`)
+    print(`got event ${JSON.stringify(request)}`)
 
     const log = msg => print(`${request.name}: ${msg}`)
 
