@@ -145,6 +145,7 @@ spec:
           body: JSON.stringify(payload)
         })
         const fval = resp.json()
+        log(`got create call ${JSON.stringify(fval)}`)
 
         if(resp.ok) {
           const policy = JSON.parse(fval.choices[0].message.function_call.arguments)
