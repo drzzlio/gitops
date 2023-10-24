@@ -11,6 +11,8 @@ spec:
   - CREATE
   - DELETE
   javascript: |
+    const AIURL = 'https://api.openai.com/v1/chat/completions'
+    const AIKEY = env('OPENAI_API_KEY')
     print(`got event ${JSON.stringify(request)}`)
 
     const log = msg => print(`${request.name}: ${msg}`)
@@ -33,8 +35,129 @@ spec:
     // if not then we need to create or update the owned jspolicy
     if(request.object.metadata.annotations?.['gpt.drzl.io/genversions'] !== request.object.metadata.resourceVersion) {
       log(`generating jspolicy code`)
-      //TODO: make a call to GPT API
-      //TODO: update genversions annotation
+
+      const description = request.object.metadata.spec.description
+
+      const payload = {
+        model: 'gpt-4',
+        temperature: 0.02,
+      //  top_p: 0.4,
+        messages: [
+          { role: 'system', content: `You are an expert in kubernetes, javascript, and JsPolicy that is responsible for creating and updating jspolicy resources in the kubernetes cluster.
+
+You will be provided a 'namespace:', 'owner:' and 'description:' for the policy resource.
+The 'description:' provided is the description of what the policy code should accomplish and you should always use the owner's name for policy name and set its ownerReferences to the owner provided.
+
+The policy code should be a string contained in the 'javascript' property of the resource.
+
+In order to limit which resources a particular policy will be triggered for, use the following JsPolicy resource properties.
+
+    operations:
+        An array of strings to constrain the Kubernetes CRUD operations to trigger on (any combination of 'CREATE', 'UPDATE', 'DELETE').
+
+    resources:
+        An array of strings to constrain the Kubernetes resource plural names to trigger on (e.g. 'pods', 'deployments', 'services' etc.
+
+    scope:
+        A string to constrain the Kubernetes resource scope to trigger on ('Namespaced', 'Cluster', or '*' for both;  defaults to '*').
+
+    apiGroups:
+        An array of strings to constrain the Kubernetes API groups to trigger on (default: '*' matches all API groups).
+
+    apiVersions:
+        An array of strings to constrain the Kubernetes API versions to trigger on (default: '*' matches all API versions).
+
+The following is a description of jspolicy functions available to call in policy code:
+
+    mutate():
+        Only available when the policy's 'spec.type' is set to 'Mutating', and tells jsPolicy to calculate a patch between the original request.object and the newly passed object. As soon as mutate(changedObj) is called, execution will be stopped. JsPolicy will remember the original request.object, which means you can freely change this object within the policy and call mutate(request.object) afterwards. If the passed object and the original object do not have any differences, jsPolicy will do nothing.
+
+    allow():
+        Allows a request and terminate execution immediately. This means that statements after allow() will not be executed anymore.
+
+    deny():
+        Denies a request immediately and halts execution. You can specify a message, reason and code via the parameters, which will printed to the client. In controller policies, deny() will only log the request to the violations log of a policy.`
+          },
+          { role: 'user', content: `namespace: ${request.namespace}
+      owner:
+          apiVersion: gpt.drzzl.io/v1
+          kind: GPTPolicy
+          name: ${request.name}
+          uid: request.object.metadata.uid
+          controller: true
+      description:
+          ${description}
+      `
+          },
+        ],
+        function_call: { name: 'create' },
+        functions: [
+      //    {
+      //      name: 'get',
+      //      description: 'Retrieve details of a Kubernetes resource.',
+      //      parameters: {
+      //        type: 'object',
+      //        properties: {
+      //          resourceType: { type: 'string' },
+      //          resourceName: { type: 'string' },
+      //          namespace: { type: 'string' }
+      //        },
+      //        required: ['resourceType', 'resourceName']
+      //      }
+      //    },
+          {
+            name: 'create',
+            description: 'Creates a new resource instance of any kind in the kubernetes cluster.',
+            parameters: {
+              type: 'object',
+              description: 'The kubernetes API resource to create in the cluster.',
+              properties: {
+                apiVersion: { type: 'string' },
+                kind: { type: 'string' },
+                metadata: {
+                  type: 'object',
+                  properties: {
+                    namespace: { type: 'string' },
+                    name: { type: 'string' },
+                  },
+                  required: ['namespace', 'name'],
+                },
+                spec: { type: 'object' },
+              },
+              required: ['apiVersion', 'kind', 'metadata', 'spec'],
+            }
+          },
+        ]
+      }
+
+      try {
+        const resp = fetchSync(AIURL, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${AIKEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload)
+        })
+
+        if(resp.ok) {
+          const policy = JSON.parse(fval.choices[0].message.function_call.arguments)
+        } else {
+          throw new Error(`Error in response: ${resp.status}`)
+        }
+      } catch(err) {
+        log(`error making policy: ${err}`)
+        requeue()
+      }
+        
+      // TODO: Set genversion attribute on the GPTPolicy instance
+      try {
+        const meta = request.object.metadata
+        meta.attributes = {...meta.attributes, 'gpt.drzzl.io/genversion': meta.resourceVersion}
+        update(request.object)
+      } catch(err) {
+        log(`error updating genversion: ${err.message}`)
+      }
 
       // Done with creation handling, bye
       allow()
