@@ -53,7 +53,7 @@ spec:
     You will be provided an 'owner:' and 'description:' for the policy resource.
     The 'description:' provided is the description of what the policy code should accomplish and you should always use the owner's name for policy name and set its ownerReferences to the owner provided.
 
-    The policy code should be a string contained in the 'javascript' property of the resource.
+    The policy code should be a string contained in the 'javascript' property of the resource and the current JsPolicy version is 'policy.jspolicy.com/v1beta1'.
 
     In order to limit which resources a particular policy will be triggered for, use the following JsPolicy resource properties.
 
