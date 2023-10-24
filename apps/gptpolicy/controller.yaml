@@ -15,7 +15,7 @@ spec:
     const AIURL = 'https://api.openai.com/v1/chat/completions'
     const AIKEY = env('OPENAI_API_KEY')
 
-    const GENVERSION_ANNOT = 'gpt.drzzl.io/genversion'
+    const LASTAPPLIED_ANNOT = 'gpt.drzzl.io/last-applied-description'
 
     print(`got event ${JSON.stringify(request)}`)
 
@@ -35,9 +35,9 @@ spec:
     }
 
     log(`handling creation event`)
-    // Check if the gpt.drzzl.io/genversion annotation matches resourceVersion,
+    // Check if the last applied annotation matches the current description,
     // if not then we need to create or update the owned jspolicy
-    if(request.object.metadata.annotations?.[GENVERSION_ANNOT] !== request.object.metadata.resourceVersion) {
+    if(request.object.metadata.annotations?.[LASTAPPLIED_ANNOT] !== request.object.spec.description) {
       log(`generating jspolicy code`)
 
       const description = request.object.spec.description
@@ -148,22 +148,26 @@ spec:
 
         if(resp.ok) {
           const policy = JSON.parse(fval.choices[0].message.function_call.arguments)
+          const cresp = create(policy)
+          if(!cresp.ok) {
+            throw new Error(`error calling create: ${cresp.message}`)
+          }
         } else {
-          throw new Error(`Error in response: ${resp.status}`)
+          throw new Error(`Error response: ${resp.status}`)
         }
       } catch(err) {
         log(`error making policy: ${err}`)
         requeue('requeuing for error calling gpt')
       }
         
-      // Set genversion annotation on the GPTPolicy instance
-      log('updating genversion annotation')
+      // Set last applied annotation on the GPTPolicy instance
+      log('updating last applied annotation')
       const meta = request.object.metadata
-      meta.annotations = {...meta.annotations, [GENVERSION_ANNOT]: meta.resourceVersion}
+      meta.annotations = {...meta.annotations, [LASTAPPLIED_ANNOT]: description}
       const upobj = update(request.object)
 
       if(!upobj.ok) {
-        log(`error updating genversion: ${err.message}`)
+        log(`error updating last applied: ${err.message}`)
         allow()
       }
 
