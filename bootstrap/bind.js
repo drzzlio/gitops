@@ -82,17 +82,16 @@ export default async function reconcile(cluster) {
 
 function createKubeconfig(cluster) {
   // kubeconfig from cluster reconcile stage
-  //eslint-disable-next-line no-unused-vars
   return {
     apiVersion: 'v1',
     kind: 'Config',
     preferences: {},
-    ['current-context']: cluster.name,
+    'current-context': cluster.name,
     clusters: [
       {
         name: cluster.name,
         cluster: {
-          ['certificate-authority-data']: cluster.masterAuth.clusterCaCertificate,
+          'certificate-authority-data': cluster.masterAuth.clusterCaCertificate,
           server: `https://${cluster.endpoint}`,
         },
       },
