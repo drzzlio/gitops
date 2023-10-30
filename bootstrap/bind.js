@@ -35,7 +35,7 @@ async function run(opdesc, cmd) {
   log({stdout, stderr}, opdesc)
 }
 
-export default async function reconcile(project, cluster) {
+export default async function reconcile(cluster) {
   const kubeconfig = createKubeconfig(cluster)
   log({kubeconfig}, 'Built kubeconfig')
 

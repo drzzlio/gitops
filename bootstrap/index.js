@@ -13,7 +13,7 @@ async function reconcile () {
     log('Reconciling bootsrap')
     const project = await reconcileProject()
     const cluster = await reconcileCluster(project)
-    await reconcileBind(project, cluster)
+    await reconcileBind(cluster)
   } catch(error) {
     log({error: serializeError(error)}, 'Error reconciling bootstrap')
   }
