@@ -70,9 +70,9 @@ Once the cluster is up and running, we can deploy our gitops operator and have
 the git repo take control of ops from here on. We'll want to create a KCC
 Project resource for the bootstrap project to take control of it.
 
-Firstly, we install argocd with what's effectively `kustomize build
-apps/argocd/overlays/primary | kubectl apply -f-`. Once argo is stable, we then
-apply `kubectl apply -f clusters/primary/appoapp.yaml` to install the
+Firstly, the automation installs argocd with what's effectively `kustomize
+build apps/argocd/overlays/primary | kubectl apply -f-`. Once argo is stable,
+it then applies `kubectl apply -f clusters/primary/appoapp.yaml` to install the
 app-of-apps that will eventually converge on having all of our applications
 configured and installed.
 
