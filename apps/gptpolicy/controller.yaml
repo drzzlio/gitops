@@ -157,6 +157,8 @@ spec:
           throw new Error(`Error response: ${resp.status}`)
         }
       } catch(err) {
+        //TODO: Should we execute a chain-of-thought flow here to resolve the
+        // error? Perhaps preempt the issues like the voyager team.
         log(`error making policy: ${err}`)
         requeue('requeuing for error calling gpt')
       }

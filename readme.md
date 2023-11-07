@@ -77,11 +77,11 @@ app-of-apps that will eventually converge on having all of our applications
 configured and installed.
 
 The argo Application in the `appoapp.yaml` points at `clusters/primary` which
-is a customization that loads the `apps` kustomization. The apps kustomization
-renders all the other argo Applications that should be made available in the
-cluster.
+is a kustomization that loads any cluster-level resources, and the `apps`
+kustomization. The apps kustomization renders all the other argo Applications
+that should be made available in the cluster.
 
-That `kustomization.yaml` might look like this:
+The `clusters/primary/apps/kustomization.yaml` might look like this:
 ```yaml
 namespace: argocd
 resources:
