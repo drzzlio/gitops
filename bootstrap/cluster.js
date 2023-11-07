@@ -36,7 +36,7 @@ export default async function reconcile(project) {
     // probably most useful for repairing botched bootstraps.
   } else {
     log('Creating cluster (this will take awhile)')
-    await client.createCluster(def)
+    client.createCluster(def)
 
     // Loop checking the provisioning status
     cluster = await getCluster(project, def)
