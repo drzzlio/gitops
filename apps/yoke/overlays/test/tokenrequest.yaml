@@ -1,0 +1,7 @@
+apiVersion: k0smotron.io/v1beta1
+kind: JoinTokenRequest
+metadata:
+  name: test-token
+spec:
+  clusterRef:
+    name: test
