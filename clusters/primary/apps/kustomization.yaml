@@ -5,6 +5,7 @@ resources:
 - gptpolicy.yaml
 - httpbin.yaml
 - motron.yaml
+- yoke.yaml
 
 patches:
 - path: 🏰.🪚.yaml
