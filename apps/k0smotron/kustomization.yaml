@@ -1,3 +1,2 @@
-namespace: motron
 resources:
 - install.yaml
