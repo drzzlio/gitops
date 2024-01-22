@@ -1,18 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: motron
+  name: k0smotron
 spec:
   source:
-    path: apps/motron
+    path: apps/k0smotron
 
   destination:
-    namespace: motron
+    namespace: k0smotron
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
-

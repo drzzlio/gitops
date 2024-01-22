@@ -4,7 +4,7 @@ resources:
 - jspolicy.yaml
 - gptpolicy.yaml
 - httpbin.yaml
-- motron.yaml
+- k0smotron.yaml
 
 patches:
 - path: 🏰.🪚.yaml
