@@ -4,7 +4,7 @@ metadata:
   name: motron
 spec:
   source:
-    path: apps/jspolicy
+    path: apps/motron
 
   destination:
     namespace: motron
