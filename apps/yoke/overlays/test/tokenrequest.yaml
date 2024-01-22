@@ -5,3 +5,4 @@ metadata:
 spec:
   clusterRef:
     name: test
+    namespace: yoke
