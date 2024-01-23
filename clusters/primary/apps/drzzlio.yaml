@@ -4,7 +4,7 @@ metadata:
   name: drzzlio
 spec:
   source:
-    path: apps/yoke/overlays/test
+    path: apps/drzzl.io
 
   destination:
     namespace: drzzlio
