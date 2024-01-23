@@ -1,0 +1,13 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: yoke-test
+spec:
+  name: "kmc-test.yoke.clusters.drzzl.io."
+  type: A
+  ttl: 60
+  managedZoneRef:
+    name: drzzlio
+    namespace: drzzlio
+  rrdatas:
+    - "34.30.4.231"
