@@ -6,4 +6,4 @@ metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
  mode: cluster
- googleServiceAccount: "kcc@gptops-playground.iam.gserviceaccount.com"
+ googleServiceAccount: "kubecc@gptops-playground.iam.gserviceaccount.com"
