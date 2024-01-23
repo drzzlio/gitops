@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: test
 spec:
-  externalAddress: yoketest.clusters.drzzl.io
+  externalAddress: kmc-test.yoke.clusters.drzzl.io
   enableMonitoring: true
   k0sVersion: v1.28.5-k0s.0
   k0sConfig:
