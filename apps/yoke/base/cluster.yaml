@@ -6,6 +6,8 @@ spec:
   externalAddress: kmc-test.yoke.clusters.drzzl.io
   enableMonitoring: true
   k0sVersion: v1.28.5-k0s.0
+  service:
+    type: LoadBalancer
   k0sConfig:
     apiVersion: k0s.k0sproject.io/v1beta1
     kind: ClusterConfig
