@@ -1,0 +1,65 @@
+resources:
+# CRDs for Jetstream Controller
+- nack-crds.yaml
+
+helmGlobals:
+  chartHome: .
+helmCharts:
+# Nats Jetstream Cluster
+- name: nats
+  releaseName: kinats
+  valuesInline:
+    config:
+      cluster:
+        enabled: true
+        replicas: 3
+      jetstream:
+        enabled: true
+        fileStore:
+          pvc:
+            size: 10Gi
+            storageClassName: premium-rwo
+        memoryStore:
+          enabled: true
+          maxSize: 128Mi
+
+    natsBox:
+      enabled: false
+
+    # Test mode scale
+    container:
+      env:
+        GOMEMLIMIT: 750MiB
+      merge:
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+
+    # Run on separate hosts
+    podTemplate:
+      topologySpreadConstraints:
+        kubernetes.io/hostname:
+          maxSkew: 1
+          whenUnsatisfiable: DoNotSchedule
+
+# Jetstream Controller
+- name: nack
+  releaseName: kinack
+  namespace: yoke
+  valuesInline:
+    namespaceOverride: ""
+    jetstream:
+      nats:
+        url: nats://kinats:4222
+
+    resources:
+      requests:
+        cpu: 128m
+        memory: 128Mi
+      limits:
+        cpu: 128m
+        memory: 128Mi
