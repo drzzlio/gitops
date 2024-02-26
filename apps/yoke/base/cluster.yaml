@@ -15,6 +15,7 @@ spec:
       name: test
     spec:
       storage:
+        type: kine
         kine:
           dataSource: jetstream://kinats:4222
       telemetry:
