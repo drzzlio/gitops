@@ -17,6 +17,6 @@ spec:
       storage:
         type: kine
         kine:
-          dataSource: nats://kinats:4222?noEmbed
+          dataSource: nats://kinats:4222?bucket=kine-test&replicas=2&noEmbed=true
       telemetry:
         enabled: false
