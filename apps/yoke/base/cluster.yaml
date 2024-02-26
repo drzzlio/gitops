@@ -17,6 +17,6 @@ spec:
       storage:
         type: kine
         kine:
-          dataSource: jetstream://kinats:4222
+          dataSource: nats://kinats:4222
       telemetry:
         enabled: false
