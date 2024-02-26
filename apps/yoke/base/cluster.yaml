@@ -17,6 +17,6 @@ spec:
       storage:
         type: kine
         kine:
-          dataSource: nats://kinats:4222
+          dataSource: nats://kinats:4222?noEmbed
       telemetry:
         enabled: false
