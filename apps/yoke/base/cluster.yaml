@@ -4,8 +4,9 @@ metadata:
   name: test
 spec:
   externalAddress: kmc-test.yoke.clusters.drzzl.io
+  kineDataSourceURL: nats://kinats:4222?bucket=kine-test&replicas=2&noEmbed=true
   enableMonitoring: true
-  k0sVersion: v1.28.5-k0s.0
+  k0sVersion: v1.29.2+k0s.0
   service:
     type: LoadBalancer
   k0sConfig:
@@ -14,9 +15,5 @@ spec:
     metadata:
       name: test
     spec:
-      storage:
-        type: kine
-        kine:
-          dataSource: nats://kinats:4222?bucket=kine-test&replicas=2&noEmbed=true
       telemetry:
         enabled: false
