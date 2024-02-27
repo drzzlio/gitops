@@ -3,6 +3,7 @@ helmGlobals:
 helmCharts:
 - name: cert-manager
   kubeVersion: "1.29"
+  releaseName: main
   valuesInline:
     installCRDs: true
     enableCertificateOwnerRef: true
