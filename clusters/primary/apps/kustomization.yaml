@@ -1,6 +1,7 @@
 namespace: argocd
 resources:
 - argocd.yaml
+- certmanager.yaml
 - drzzlio.yaml
 - jspolicy.yaml
 - gptpolicy.yaml

@@ -1,0 +1,8 @@
+helmGlobals:
+  chartHome: .
+helmCharts:
+- name: cert-manager
+  kubeVersion: "1.29"
+  valuesInline:
+    installCRDs: true
+    enableCertificateOwnerRef: true
