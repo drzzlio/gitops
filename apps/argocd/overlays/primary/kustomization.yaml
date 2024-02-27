@@ -5,3 +5,4 @@ resources:
 
 patches:
 - path: argocd-cm.patch.yaml
+- path: custom-tools.patch.yaml
