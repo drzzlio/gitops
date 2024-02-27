@@ -8,3 +8,11 @@ helmCharts:
     namespace: certmanager
     installCRDs: true
     enableCertificateOwnerRef: true
+
+# Remove instance label so argo doesn't assume multiple apps are controlling these
+patches:
+- target:
+    kind: CustomResourceDefinition
+  patch: |- 
+    - op: remove
+      path: /metadata/labels/app.kubernetes.io~1instance
