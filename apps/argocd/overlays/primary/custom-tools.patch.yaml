@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: argocd-repo-server
 spec:
+  # FIXME: Don't want to install binaries at runtime!
   template:
     spec:
       # 1. Define an emptyDir volume which will hold the custom binaries
