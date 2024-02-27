@@ -10,4 +10,4 @@ spec:
     name: drzzlio
     namespace: drzzlio
   rrdatas:
-    - "34.72.50.77"
+    - "34.134.7.245"
