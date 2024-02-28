@@ -6,7 +6,7 @@ helmGlobals:
   chartHome: .
 helmCharts:
 # Nats Jetstream Cluster
-- name: nats
+- name: nats-v1.1.9
   releaseName: kinats
   valuesInline:
     config:
@@ -47,7 +47,7 @@ helmCharts:
           whenUnsatisfiable: DoNotSchedule
 
 # Jetstream Controller
-- name: nack
+- name: nack-v0.25.1
   releaseName: kinack
   namespace: yoke
   valuesInline:
