@@ -1,3 +1,4 @@
 resources:
 - cluster.yaml
 - nats/
+- pki.yaml
