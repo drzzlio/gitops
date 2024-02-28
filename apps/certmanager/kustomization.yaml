@@ -1,3 +1,6 @@
+resources:
+- selfsigned-issuer.yaml
+
 helmGlobals:
   chartHome: .
 helmCharts:
@@ -9,7 +12,7 @@ helmCharts:
     installCRDs: true
     enableCertificateOwnerRef: true
 
-# Remove instance label so argo doesn't assume multiple apps are controlling these
+# Remove CRD instance label so argo doesn't assume multiple apps are controlling these
 patches:
 - target:
     kind: CustomResourceDefinition
