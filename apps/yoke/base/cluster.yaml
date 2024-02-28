@@ -3,10 +3,16 @@ kind: Cluster
 metadata:
   name: test
 spec:
+  k0sVersion: v1.29.2-k0s.0
   externalAddress: kmc-test.yoke.clusters.drzzl.io
   kineDataSourceURL: nats://kinats:4222?bucket=kine-test&replicas=2&noEmbed=true
-  enableMonitoring: true
-  k0sVersion: v1.29.2-k0s.0
+  certificateRefs:
+  - type: ca
+    name: test-ca-pki
+  - type: sa
+    name: test-sa-pki
+  - type: proxy
+    name: test-front-proxy-pki
   service:
     type: LoadBalancer
   k0sConfig:
