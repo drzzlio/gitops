@@ -58,12 +58,14 @@ data:
         resource_api_version: V3
         path_config_source:
           path: /etc/envoy/lds.yaml
-          watched_directory: /etc/envoy
+          watched_directory:
+            path: /etc/envoy
       cds_config:
         resource_api_version: V3
         path_config_source:
           path: /etc/envoy/cds.yaml
-          watched_directory: /etc/envoy
+          watched_directory:
+            path: /etc/envoy
 
   lds.yaml: |
     resources:
