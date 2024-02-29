@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingress-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingress-proxy
+  template:
+    metadata:
+      labels:
+        app: ingress-proxy
+    spec:
+      containers:
+      - name: ingress-proxy
+        image: envoyproxy/envoy:v1.29-latest
+        args: ["-c", "/etc/envoy/bootstrap.yaml", "--service-node", "$(NODE_ID)", ]
+        env:
+        - name: NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: proxy-config
+          mountPath: /etc/envoy
+      volumes:
+      - name: proxy-config
+        configMap:
+          name: ingress-proxy
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-proxy
+data:
+  bootstrap.yaml: |
+    node:
+      cluster: primary
+      locality:
+        region: us-central1
+        zone: us-central1-a
+    admin:                                                                                                                                                                                           
+      address:                                                                                                                                                                                       
+        socket_address:                                                                                                                                                                              
+          protocol: TCP                                                                                                                                                                              
+          address: 0.0.0.0                                                                                                                                                                           
+          port_value: 9901
+    dynamic_resources:
+      lds_config:
+        resource_api_version: V3
+        path: /etc/envoy/lds.yaml
+      cds_config:
+        resource_api_version: V3
+        path: /etc/envoy/cds.yaml
+
+  lds.yaml: |
+    resources:
+    - "@type": type.googleapis.com/envoy.config.listener.v3.Listener
+      name: listener_0
+      address:
+        socket_address:
+          address: 0.0.0.0
+          port_value: 10000
+      filter_chains:
+      - filters:
+        - name: envoy.http_connection_manager
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+            stat_prefix: ingress_http
+            http_filters:
+            - name: envoy.router
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+            route_config:
+              name: local_route
+              virtual_hosts:
+              - name: local_service
+                domains:
+                - "*"
+                routes:
+                - match:
+                    prefix: "/"
+                  route:
+                    host_rewrite_literal: www.envoyproxy.io
+                    cluster: example_proxy_cluster
+
+  cds.yaml: |
+    resources:
+    - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+      name: example_proxy_cluster
+      type: STRICT_DNS
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config:
+            http2_protocol_options: {}
+      load_assignment:
+        cluster_name: example_proxy_cluster
+        endpoints:
+        - lb_endpoints:
+          - endpoint:
+              address:
+                socket_address:
+                  address: www.envoyproxy.io
+                  port_value: 443
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+          sni: www.envoyproxy.io

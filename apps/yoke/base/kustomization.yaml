@@ -2,3 +2,4 @@ resources:
 - cluster.yaml
 - nats/
 - pki.yaml
+- ingress-proxy.yaml
