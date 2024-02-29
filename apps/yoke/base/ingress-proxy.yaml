@@ -29,7 +29,8 @@ spec:
           containerPort: 10000
           protocol: TCP
         startupProbe:
-          periodSeconds: 3
+          periodSeconds: 2
+          failureThreshold: 5
           httpGet:
             path: /ready
             port: admin
