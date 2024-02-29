@@ -22,7 +22,11 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         ports:
-        - containerPort: 8080
+        - name: admin
+          containerPort: 9000
+          protocol: TCP
+        - name: proxy
+          containerPort: 10000
           protocol: TCP
         volumeMounts:
         - name: proxy-config
@@ -52,10 +56,14 @@ data:
     dynamic_resources:
       lds_config:
         resource_api_version: V3
-        path: /etc/envoy/lds.yaml
+        path_config_source:
+          path: /etc/envoy/lds.yaml
+          watched_directory: /etc/envoy
       cds_config:
         resource_api_version: V3
-        path: /etc/envoy/cds.yaml
+        path_config_source:
+          path: /etc/envoy/cds.yaml
+          watched_directory: /etc/envoy
 
   lds.yaml: |
     resources:
