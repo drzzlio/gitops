@@ -52,7 +52,7 @@ data:
         socket_address:                                                                                                                                                                              
           protocol: TCP                                                                                                                                                                              
           address: 0.0.0.0                                                                                                                                                                           
-          port_value: 9901
+          port_value: 9000
     dynamic_resources:
       lds_config:
         resource_api_version: V3
