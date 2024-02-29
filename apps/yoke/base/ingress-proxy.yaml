@@ -28,8 +28,12 @@ spec:
         - name: proxy
           containerPort: 10000
           protocol: TCP
+        startupProbe:
+          periodSeconds: 3
+          httpGet:
+            path: /ready
+            port: admin
         readinessProbe:
-          initialDelaySeconds: 5
           httpGet:
             path: /ready
             port: admin
