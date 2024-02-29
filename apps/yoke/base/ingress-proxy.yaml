@@ -28,6 +28,11 @@ spec:
         - name: proxy
           containerPort: 10000
           protocol: TCP
+        readinessProbe:
+          initialDelaySeconds: 5
+          httpGet:
+            path: /ready
+            port: admin
         volumeMounts:
         - name: proxy-config
           mountPath: /etc/envoy
