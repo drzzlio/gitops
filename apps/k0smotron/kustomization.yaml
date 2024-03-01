@@ -2,6 +2,6 @@ resources:
 - install-drzzltron.yaml
 
 images:
-- name: quay.io/k0sproject/k0smotron
+- name: k0s/k0smotron
   newName: ghcr.io/drzzlio/k0smotron
   newTag: v0.0.1
