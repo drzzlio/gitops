@@ -7,8 +7,8 @@ spec:
   commonName: Test Cluster CA
   secretName: test-ca-pki
   privateKey:
-    algorithm: ECDSA
-    size: 256
+    algorithm: RSA
+    size: 2048
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
@@ -22,8 +22,8 @@ spec:
   commonName: Test Cluster SA Cert
   secretName: test-sa-pki
   privateKey:
-    algorithm: ECDSA
-    size: 256
+    algorithm: RSA
+    size: 2048
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
@@ -38,8 +38,8 @@ spec:
   commonName: Test Cluster Proxy CA
   secretName: test-front-proxy-pki
   privateKey:
-    algorithm: ECDSA
-    size: 256
+    algorithm: RSA
+    size: 2048
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
