@@ -7,6 +7,8 @@ spec:
   externalAddress: kmc-test.yoke.clusters.drzzl.io
   kineDataSourceURL: nats://kinats:4222?bucket=kine-test&replicas=2&noEmbed=true
   enableMonitoring: true
+  persistence:
+    type: emptyDir
   certificateRefs:
   - type: ca
     name: test-ca-pki
