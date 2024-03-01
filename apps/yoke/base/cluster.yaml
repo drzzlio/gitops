@@ -8,7 +8,7 @@ spec:
   kineDataSourceURL: nats://kinats:4222?bucket=kine-test&replicas=2&noEmbed=true
   persistence:
     type: emptyDir
-  controllerPlaneFlags: --enable-dynamic-config=false
+  controllerPlaneFlags: [ "--enable-dynamic-config=false" ]
   certificateRefs:
   - type: ca
     name: test-ca-pki
