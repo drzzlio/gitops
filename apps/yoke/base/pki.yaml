@@ -19,8 +19,7 @@ kind: Certificate
 metadata:
   name: test-sa
 spec:
-  isCA: true
-  commonName: Test Cluster SA CA
+  commonName: Test Cluster SA Cert
   secretName: test-sa-pki
   privateKey:
     algorithm: ECDSA
