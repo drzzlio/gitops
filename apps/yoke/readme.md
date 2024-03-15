@@ -262,9 +262,9 @@ this will work well for configuration of the buckets. It _does_ support
 Accounts, which may be enough to meet our needs for tenant isolation, just
 let the controlplanes create their assigned buckets.
 
-An interesting thought was proposed by a blog post talking about kine's NATs
+An interesting thought was proposed by [the blog post](https://nats.io/blog/exploring-nats-as-a-backend-for-k3s/) talking about kine's NATs
 integration, where leaf nodes are run next to the controlplane and then peer
-with supercluster. There could be some interesting benefits to doing this with
+with superclusters. There could be some interesting benefits to doing this with
 our ephemeral controlplanes, but unsure if they align with our goals or if
 they're substantial enough for the compute costs.
 
