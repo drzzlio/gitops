@@ -4,7 +4,8 @@ resources:
 helmGlobals:
   chartHome: .
 helmCharts:
-- name: v1.14.3
+
+- name: cert-manager-v1.14.3
   kubeVersion: "1.29"
   releaseName: main
   valuesInline:
@@ -12,10 +13,22 @@ helmCharts:
     installCRDs: true
     enableCertificateOwnerRef: true
 
+- name: google-cas-issuer-v0.8.0
+  releaseName: main
+  namespace: certmanager
+  valuesInline:
+    app:
+      approval:
+        subjects:
+        - kind: ServiceAccount
+          name: main-cert-manager
+          namespace: certmanager
+
 # Remove CRD instance label so argo doesn't assume multiple apps are controlling these
 patches:
 - target:
     kind: CustomResourceDefinition
+    labelSelector: app.kubernetes.io/instance
   patch: |- 
     - op: remove
       path: /metadata/labels/app.kubernetes.io~1instance
