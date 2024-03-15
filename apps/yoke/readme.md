@@ -237,7 +237,10 @@ Giving the controlplane the ability to create Certificate CRDs in its namespace
 could be a solution here.
 
 TODO: Figure out the rotation workflow details
+
 TODO: Root CA should be stored in a KMS(and maybe the intermediates).
+After researching pricing on google's privateCA ($20/month+0.30/issued cert),
+we need a different method for securely storing our CA private key.
 
 # Kine and NATs
 

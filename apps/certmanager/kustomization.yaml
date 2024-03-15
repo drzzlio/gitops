@@ -13,17 +13,6 @@ helmCharts:
     installCRDs: true
     enableCertificateOwnerRef: true
 
-- name: google-cas-issuer-v0.8.0
-  releaseName: main
-  namespace: certmanager
-  valuesInline:
-    app:
-      approval:
-        subjects:
-        - kind: ServiceAccount
-          name: main-cert-manager
-          namespace: certmanager
-
 # Remove CRD instance label so argo doesn't assume multiple apps are controlling these
 patches:
 - target:
