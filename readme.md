@@ -33,8 +33,7 @@ kubectl and k9s.
 
 If you use such tooling to port forward to the argo-server UI, you can find the
 initial admin password in a dynamically generated secret resource. One such
-method using kubectl: `kubectl -n argocd get secret argocd-initial-admin-secret
--o jsonpath="{.data.password}" | base64 -d`.
+method using kubectl: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d`.
 
 This pulls the secret value out of your cluster and decodes it to human
 readable text, which is then shown to you on the CLI (and can be used in the
