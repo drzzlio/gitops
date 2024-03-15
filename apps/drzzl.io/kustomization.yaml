@@ -1,3 +1,4 @@
 resources:
 - configconnector.yaml
 - dns.yaml
+- serviceusage.yaml
