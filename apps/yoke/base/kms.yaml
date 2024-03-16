@@ -1,0 +1,21 @@
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: yoke
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  location: us-central1
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: yokeroot
+spec:
+  keyRingRef:
+    name: yoke
+  purpose: ASYMMETRIC_SIGN
+  versionTemplate:
+    algorithm: RSA_SIGN_PSS_2048_SHA256
+    protectionLevel: HSM
+  importOnly: false

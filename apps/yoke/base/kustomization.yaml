@@ -3,3 +3,4 @@ resources:
 - nats/
 - pki.yaml
 - ingress-proxy.yaml
+- kms.yaml
