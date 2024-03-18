@@ -1,0 +1,20 @@
+namespace: yoke
+resources:
+- install.yaml
+- workloadidentity.yaml
+- kmskey.yaml
+- kmspolicy.yaml
+
+images:
+- name: drzzlio/kms-issuer
+  newName: ghcr.io/drzzlio/kms-issuer
+  newTag: sha-3b83f92
+
+patches:
+- target:
+    kind: ServiceAccount
+    name: kms-issuer-controller-manager
+  patch: |-
+    - op: add
+      path: /metadata/annotations/iam.gke.io~1gcp-service-account
+      value: yoke-kms-issuer@gptops-playground.iam.gserviceaccount.com

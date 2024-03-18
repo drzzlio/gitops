@@ -1,0 +1,11 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: yoke-kms-issuer-key-signerverifier
+spec:
+  member: serviceAccount:yoke-kms-issuer@gptops-playground.iam.gserviceaccount.com
+  role: roles/cloudkms.signerVerifier
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: yokeroot

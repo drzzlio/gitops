@@ -1,6 +1,6 @@
 resources:
 - cluster.yaml
 - nats/
+- issuer/
 - pki.yaml
 - ingress-proxy.yaml
-- kms.yaml
