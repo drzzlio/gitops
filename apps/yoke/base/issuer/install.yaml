@@ -232,6 +232,20 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - kms.cnrm.cloud.google.com/v1beta1
+  resources:
+  - kmscryptokeys
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - kms.cnrm.cloud.google.com/v1beta1
+  resources:
+  - kmscryptokeys/status
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -386,7 +400,7 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: drzzlio/kms-issuer:dev
+        image: ghcr.io/drzzlio/kms-issuer:dev
         livenessProbe:
           httpGet:
             path: /healthz
