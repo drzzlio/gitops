@@ -1,0 +1,9 @@
+apiVersion: cert-manager.drzzl.io/v1alpha1
+kind: KMSIssuer
+metadata:
+  name: yokeroot
+spec:
+  keyRef: 
+    name: yokeroot
+  commonName: Yoke Ephemeral Cluster Root
+  duration: 87600h # 10 years

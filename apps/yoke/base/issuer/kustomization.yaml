@@ -4,6 +4,7 @@ resources:
 - workloadidentity.yaml
 - kmskey.yaml
 - kmspolicy.yaml
+- kmsissuer.yaml
 
 images:
 - name: drzzlio/kms-issuer
