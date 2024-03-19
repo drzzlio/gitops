@@ -1,0 +1,6 @@
+apiVersion: gpt.drzzl.io/v1
+kind: GPTPolicy
+metadata:
+  name: no-iampolicy-targeting-projects.drzzl.io
+spec:
+  description: "Deny any IAMPolicy config connector resources that target a Project"
