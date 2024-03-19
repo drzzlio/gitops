@@ -3,4 +3,4 @@ kind: GPTPolicy
 metadata:
   name: no-iampolicy-targeting-projects.drzzl.io
 spec:
-  description: "Deny any IAMPolicy config connector resources that target a Project"
+  description: "Deny any IAMPolicy config connector resources that reference a Project"
