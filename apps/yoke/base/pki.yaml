@@ -1,18 +1,18 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: test-ca
+  name: kms-test-ca
 spec:
   isCA: true
-  commonName: Test Cluster CA
+  commonName: Test Cluster KMS CA
   secretName: test-ca-pki
   privateKey:
     algorithm: RSA
     size: 2048
   issuerRef:
-    name: selfsigned-issuer
-    kind: ClusterIssuer
-    group: cert-manager.io
+    name: yokeroot
+    kind: KMSIssuer
+    group: cert-manager.drzzl.io
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
