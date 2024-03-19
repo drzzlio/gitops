@@ -18,3 +18,13 @@ patches:
     - op: add
       path: /metadata/annotations/iam.gke.io~1gcp-service-account
       value: yoke-kms-issuer@gptops-playground.iam.gserviceaccount.com
+- target:
+    kind: ClusterRoleBinding
+    name: kms-issuer-cert-manager-controller-approve:cert-manager-drzzl-io
+  patch: |-
+    - op: replace
+      path: /subjects/0
+      value:
+        kind: ServiceAccount
+        name: main-cert-manager
+        namespace: certmanager
