@@ -233,7 +233,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - kms.cnrm.cloud.google.com/v1beta1
+  - kms.cnrm.cloud.google.com
   resources:
   - kmscryptokeys
   verbs:
@@ -241,7 +241,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - kms.cnrm.cloud.google.com/v1beta1
+  - kms.cnrm.cloud.google.com
   resources:
   - kmscryptokeys/status
   verbs:
