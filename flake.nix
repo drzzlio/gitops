@@ -58,8 +58,10 @@
             # and the current directory before dyffing the output.
             kdiff.exec = ''
               ${newtree}
-              echo diffing `pwd`/$1 with master/$1
-              ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header <(kustomize build --enable-helm /tmp/gitopskdiffmaster/$1) <(kustomize build --enable-helm `pwd`/$1)
+              >&2 echo diffing `pwd`/$1 with master/$1
+              ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header \
+                <(kustomize build --enable-helm /tmp/gitopskdiffmaster/$1) \
+                <(kustomize build --enable-helm `pwd`/$1)
             '';
             # Automated kdiff on file changes.
             # Takes two directories, watches the first for any yaml file
@@ -74,10 +76,13 @@
             # and the cluster in the local directory.
             cdiff.exec = ''
               ${newtree}
-              echo diffing `pwd`/clusters/$1 with master/clusters/$1
-              ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header \
-              <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
-              <(kustomize build clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
+              >&2 echo diffing `pwd`/clusters/$1 with master/clusters/$1
+              ${pkgs.dyff}/bin/dyff between --color on --ignore-order-changes --truecolor on --omit-header \
+                <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
+                <(kustomize build clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
+            '';
+            cdiffreport.exec = ''
+              cdiff $1 | ${pkgs.aha}/bin/aha 
             '';
           };
 
