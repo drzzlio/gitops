@@ -37,6 +37,22 @@
             ROARR_LOG = "true";
           };
 
+          scripts = {
+            kdiff.exec = ''
+              set -e
+              git fetch
+              if git worktree list | grep gitopskdiffmaster; then
+                git worktree remove /tmp/gitopskdiffmaster
+              fi
+              git worktree add /tmp/gitopskdiffmaster origin/master
+              echo diffing `pwd`/$1 with master/$1
+              ${pkgs.dyff}/bin/dyff between --omit-header <(kustomize build --enable-helm /tmp/gitopskdiffmaster/$1) <(kustomize build --enable-helm `pwd`/$1)
+            '';
+            kdiffwatch.exec = ''
+              ${pkgs.watchexec}/bin/watchexec -e yaml -w $1 kdiff $2
+            '';
+          };
+
           packages = with pkgs;[
             k9s
             kubectl
