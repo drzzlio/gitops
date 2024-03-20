@@ -76,8 +76,8 @@
               ${newtree}
               echo diffing `pwd`/clusters/$1 with master/clusters/$1
               ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header \
-              <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' | tr -d '"' | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
-              <(kustomize build clusters/$1 | yq '.spec.source.path' | tr -d '"' | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
+              <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
+              <(kustomize build clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
             '';
           };
 
