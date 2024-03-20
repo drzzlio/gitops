@@ -37,19 +37,47 @@
             ROARR_LOG = "true";
           };
 
-          scripts = {
-            kdiff.exec = ''
+          scripts = let
+            newtree = ''
               set -e
-              git fetch
-              if git worktree list | grep gitopskdiffmaster; then
-                git worktree remove /tmp/gitopskdiffmaster
+              if git worktree list | grep gitopskdiffmaster &> /dev/null; then
+                cd /tmp/gitopskdiffmaster
+                git fetch
+                git checkout origin/master &> /dev/null
+                cd - > /dev/null
+              else
+                git fetch
+                git worktree add /tmp/gitopskdiffmaster origin/master &> /dev/null
               fi
-              git worktree add /tmp/gitopskdiffmaster origin/master
-              echo diffing `pwd`/$1 with master/$1
-              ${pkgs.dyff}/bin/dyff between --omit-header <(kustomize build --enable-helm /tmp/gitopskdiffmaster/$1) <(kustomize build --enable-helm `pwd`/$1)
             '';
+          in {
+            # Useful for diffing an application's generated resources after
+            # local changes.
+            # Takes a relative path, checkes out master in a temp folder, then
+            # does `kustomize build` against the same relative path from master
+            # and the current directory before dyffing the output.
+            kdiff.exec = ''
+              ${newtree}
+              echo diffing `pwd`/$1 with master/$1
+              ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header <(kustomize build --enable-helm /tmp/gitopskdiffmaster/$1) <(kustomize build --enable-helm `pwd`/$1)
+            '';
+            # Automated kdiff on file changes.
+            # Takes two directories, watches the first for any yaml file
+            # changes, calls `kdiff` on the second any time a change
+            # is detected.
             kdiffwatch.exec = ''
               ${pkgs.watchexec}/bin/watchexec -e yaml -w $1 kdiff $2
+            '';
+            # Similar to kdiff, but for all the resources in cluster
+            # Takes the name of a cluster, checks out master to a temp folder,
+            # then generates and dyffs the resources for the cluster at master
+            # and the cluster in the local directory.
+            cdiff.exec = ''
+              ${newtree}
+              echo diffing `pwd`/clusters/$1 with master/clusters/$1
+              ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header \
+              <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' | tr -d '"' | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
+              <(kustomize build clusters/$1 | yq '.spec.source.path' | tr -d '"' | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
             '';
           };
 
