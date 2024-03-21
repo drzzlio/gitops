@@ -1,0 +1,31 @@
+apiVersion: apps/v1                                                                                                                                           
+kind: Deployment                                                                                                                                              
+metadata:
+  name: argocd-server
+spec:
+  template:
+    spec:
+      containers:
+      - name: argonix-cmp-plugin
+        command: [/var/run/argocd/argocd-cmp-server]
+        image: nixos/nix
+# FIXME: need nonroot secure image
+#        securityContext:
+#          runAsNonRoot: true
+#          runAsUser: 999
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+            name: argonix-cmp-plugin
+          - mountPath: /tmp
+            name: cmp-tmp
+      volumes:
+      - configMap:
+          name: argonix-cmp-plugin
+        name: argonix-cmp-plugin
+      - emptyDir: {}
+        name: argonix-cmp-tmp

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: argonix-jobs
+spec:
+  version: v1.0
+  # Make sure the reconciler is up-to-date
+  init:
+    command: [bash, -c]
+    args:
+    - >-
+        nix --extra-experimental-features 'nix-command flakes' build
+        --out-link /opt/reconciler github:drzzlio/argonix?dir=cmp#reconcile;
+        nix-collect-garbage
+
+  # Run the argonix job reconciler
+  # Must always and only return k8s resources to stdout
+  generate:
+    command: [/opt/reconciler/bin/reconcile]
+
+  # Run against repos with a flake in the root
+  discover:
+    fileName: "./flake.nix"
+    preserveFileMode: false
