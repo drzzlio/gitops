@@ -87,6 +87,7 @@
           };
 
           packages = with pkgs;[
+            yq
             k9s
             kubectl
             # Need 5.3 for kubeVersion in helmchartinflator
