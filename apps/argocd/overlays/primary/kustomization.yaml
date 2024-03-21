@@ -3,6 +3,9 @@ resources:
 - ../../base
 - repo.yaml
 
+components:
+- ../../components/argonix
+
 patches:
 - path: argocd-cm.patch.yaml
 - path: custom-tools.patch.yaml

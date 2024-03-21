@@ -1,0 +1,9 @@
+configMapGenerator:
+- name: argonix-cmp-plugin
+  files:
+  - plugin.yaml=jobs-cmp-plugin.yaml
+
+patches:
+- path: jobs-cmp-container.patch.yaml
+
+kind: Component
