@@ -17,7 +17,21 @@
       ];
       systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
-      perSystem = { config, self', inputs', pkgs, system, ... }: {
+      perSystem = { config, self', inputs', pkgs, system, ... }:
+      let
+        newtree = ''
+          set -e
+          if git worktree list | grep gitopskdiffmaster &> /dev/null; then
+            cd /tmp/gitopskdiffmaster
+            git fetch
+            git checkout origin/master &> /dev/null
+            cd - > /dev/null
+          else
+            git fetch
+            git worktree add /tmp/gitopskdiffmaster origin/master &> /dev/null
+          fi
+        '';
+      in {
         _module.args.pkgs = import inputs.nixpkgs {
           inherit system;
           overlays = [
@@ -37,20 +51,7 @@
             ROARR_LOG = "true";
           };
 
-          scripts = let
-            newtree = ''
-              set -e
-              if git worktree list | grep gitopskdiffmaster &> /dev/null; then
-                cd /tmp/gitopskdiffmaster
-                git fetch
-                git checkout origin/master &> /dev/null
-                cd - > /dev/null
-              else
-                git fetch
-                git worktree add /tmp/gitopskdiffmaster origin/master &> /dev/null
-              fi
-            '';
-          in {
+          scripts = {
             # Useful for diffing an application's generated resources after
             # local changes.
             # Takes a relative path, checkes out master in a temp folder, then
@@ -77,17 +78,13 @@
             cdiff.exec = ''
               ${newtree}
               >&2 echo diffing `pwd`/clusters/$1 with master/clusters/$1
-              ${pkgs.dyff}/bin/dyff between --color on --ignore-order-changes --truecolor on --omit-header \
+              ${pkgs.dyff}/bin/dyff between --ignore-order-changes --truecolor on --omit-header \
                 <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
                 <(kustomize build clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
-            '';
-            cdiffreport.exec = ''
-              cdiff $1 | ${pkgs.aha}/bin/aha 
             '';
           };
 
           packages = with pkgs;[
-            yq
             k9s
             kubectl
             # Need 5.3 for kubeVersion in helmchartinflator
@@ -96,6 +93,29 @@
             (google-cloud-sdk.withExtraComponents [
               google-cloud-sdk.components.gke-gcloud-auth-plugin
             ])
+          ];
+        };
+
+        devenv.shells.ci = {
+          scripts = {
+            cdiff.exec = ''
+              ${newtree}
+              >&2 echo diffing `pwd`/clusters/$1 with master/clusters/$1
+              dyff between --color on --ignore-order-changes --truecolor on --omit-header \
+                <(kustomize build /tmp/gitopskdiffmaster/clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm /tmp/gitopskdiffmaster/{} 2>&1; echo "---"') \
+                <(kustomize build clusters/$1 | yq '.spec.source.path' -r | tr '\n' '\0' | xargs -0i -n 1 bash -c 'kustomize build --enable-helm {} 2>&1; echo "---"')
+            '';
+            cdiffreport.exec = ''
+              cdiff $1 | aha 
+            '';
+          };
+
+          packages = with pkgs; [
+            yq
+            dyff
+            aha
+            unstable.kustomize
+            kubernetes-helm
           ];
         };
 
