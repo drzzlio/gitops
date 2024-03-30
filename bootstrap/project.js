@@ -76,17 +76,18 @@ async function updateProject(project) {
 }
 
 async function reconcileKccServiceAccount(project) {
-  const accountId = 'kubecc'
   const pname = `projects/${project}`
+  const accountId = 'kubecc'
   const email = `${accountId}@${project}.iam.gserviceaccount.com`
   const name = `${pname}/serviceAccounts/${email}`
 
   log(`reconciling kubecc service account`)
 
   // Find an existing SA
-  var exsa = null
+  var found = false
   try {
-    exsa = await iam.projects.serviceAccounts.get({ name })
+    await iam.projects.serviceAccounts.get({ name })
+    found = true
     log('kubecc service account exists')
   } catch(err) {
     // We're ok with not-found
@@ -95,8 +96,8 @@ async function reconcileKccServiceAccount(project) {
     }
   }
 
-  // Create the sa if it doesn't exist
-  if(!exsa) {
+  // Create the SA if it doesn't exist
+  if(!found) {
     const resp = await iam.projects.serviceAccounts.create({
       name: pname,
       requestBody: {
@@ -112,10 +113,16 @@ async function reconcileKccServiceAccount(project) {
 
   // We need to reconcile the policy binding list ourselves since there are no
   // API operations to interact with the bindings list directly.
-  // Set roles:
-  // Editor
-  // Cloud KMS Admin
-  // Service Account Admin
+  // We set roles similar to what you might give a terraform SA:
+  // - Editor - make most changes in the project
+  // - Cloud KMS Admin - for managing iam policy
+  // - Service Account Admin - for managing iam policy
+  // - <no doubt more will be added here>
+  const roles = [
+    'roles/editor',
+    'roles/cloudkms.admin',
+    'roles/iam.serviceAccountAdmin',
+  ]
 
   // Ensures a member has a particular role on a policy.
   // returns truthy if a mutation occurred
@@ -140,17 +147,14 @@ async function reconcileKccServiceAccount(project) {
   })
 
   // Reconciles a list of roles
-  const roleconciler = (...roles) =>
-    roles
-      .map(roleconcile(policy, `serviceAccount:${email}`))
-      .some(m => !!m)
+  const roleconciler = roleconcile(policy, `serviceAccount:${email}`)
 
   // Do the reconciliation and update the policy if necessary
-  if(roleconciler(
-    'roles/editor',
-    'roles/iam.serviceAccountAdmin',
-    'roles/cloudkms.admin',
-  )) {
+  if(
+    roles
+      .map(roleconciler)
+      .some(mutated => !!mutated)
+  ) {
     await client.setIamPolicy({
       resource: pname,
       policy,
