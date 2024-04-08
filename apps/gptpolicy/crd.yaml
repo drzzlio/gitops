@@ -9,6 +9,7 @@ spec:
     plural: gptpolicies
     singular: gptpolicy
     kind: GPTPolicy
+    listKind: GPTPolicyList
     shortNames:
     - gptp
   versions:

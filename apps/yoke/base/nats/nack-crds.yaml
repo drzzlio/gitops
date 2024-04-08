@@ -8,6 +8,7 @@ spec:
   scope: Namespaced
   names:
     kind: Stream
+    listKind: StreamList
     singular: stream
     plural: streams
   versions:
@@ -477,6 +478,7 @@ spec:
   scope: Namespaced
   names:
     kind: Consumer
+    listKind: ConsumerList
     singular: consumer
     plural: consumers
   versions:
@@ -817,6 +819,7 @@ spec:
   scope: Namespaced
   names:
     kind: StreamTemplate
+    listKind: StreamTemplateList
     singular: streamtemplate
     plural: streamtemplates
   versions:
@@ -950,6 +953,7 @@ spec:
   scope: Namespaced
   names:
     kind: Account
+    listKind: AccountList
     singular: account
     plural: accounts
   versions:
