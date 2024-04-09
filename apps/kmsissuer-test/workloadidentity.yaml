@@ -18,4 +18,4 @@ spec:
     - role: roles/iam.workloadIdentityUser
       members:
         # Gives impersonation permission to actions in the github.com/drzzlio/kms-issuer repo
-        - principalSet://iam.googleapis.com/projects/gptops-playground/locations/global/workloadIdentityPools/github/attribute.repository/drzzlio/kms-issuer
+        - principalSet://iam.googleapis.com/projects/726581429530/locations/global/workloadIdentityPools/github/attribute.repository/drzzlio/kms-issuer
