@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: drzzlio
+  name: kmsissuer-test
 spec:
   source:
     path: apps/kmsissuer-test
