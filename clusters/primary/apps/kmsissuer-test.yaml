@@ -13,5 +13,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    managedNamespaceMetadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: gptops-playground
     syncOptions:
     - CreateNamespace=true
