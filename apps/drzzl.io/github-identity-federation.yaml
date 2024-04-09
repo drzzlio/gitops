@@ -12,7 +12,7 @@ spec:
   description: Github repo actions workload identity federation
   disabled: false
   attributeMapping:
-    google.subject: assertion.sub,attribute.repository=assertion.repository
+    google.subject: 'assertion.sub,attribute.repository=assertion.repository'
   oidc:
     issuerUri: https://token.actions.githubusercontent.com
 ---
