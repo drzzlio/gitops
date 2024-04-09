@@ -1,0 +1,23 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: kmsissuer-tester-key-signerverifier
+spec:
+  member: serviceAccount:kmsissuer-tester@gptops-playground.iam.gserviceaccount.com
+  role: roles/cloudkms.signerVerifier
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmsissuer-test
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: kmsissuer-test-key-viewer
+spec:
+  member: serviceAccount:kmsissuer-tester@gptops-playground.iam.gserviceaccount.com
+  role: roles/cloudkms.viewer
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmsissuer-test

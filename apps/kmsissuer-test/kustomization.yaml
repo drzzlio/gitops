@@ -1,0 +1,4 @@
+resources:
+- identity.yaml
+- kmskey.yaml
+- kmspolicy.yaml

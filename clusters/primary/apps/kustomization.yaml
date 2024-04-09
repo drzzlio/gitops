@@ -3,10 +3,11 @@ resources:
 - argocd.yaml
 - certmanager.yaml
 - drzzlio.yaml
-- jspolicy.yaml
 - gptpolicy.yaml
 - httpbin.yaml
+- jspolicy.yaml
 - k0smotron.yaml
+- kmsissuer-test.yaml
 - yoke.yaml
 
 patches:
