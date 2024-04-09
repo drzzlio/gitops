@@ -1,4 +1,4 @@
 resources:
-- identity.yaml
+- workloadidentity.yaml
 - kmskey.yaml
 - kmspolicy.yaml

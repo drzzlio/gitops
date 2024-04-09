@@ -1,0 +1,29 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMWorkloadIdentityPoolProvider
+metadata:
+  name: github
+spec:
+  projectRef:
+    external: projects/gptops-playground
+  location: global
+  workloadIdentityPoolRef:
+    name: github
+  displayName: github
+  description: Github repo actions workload identity federation
+  disabled: false
+  attributeMapping:
+    google.subject: assertion.sub,attribute.repository=assertion.repository
+  oidc:
+    issuerUri: https://token.actions.githubusercontent.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMWorkloadIdentityPool
+metadata:
+  name: github
+spec:
+  projectRef:
+    external: projects/gptops-playground
+  location: global
+  displayName: github
+  description: Identity pool for github actions workloads
+  disabled: false

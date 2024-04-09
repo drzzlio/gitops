@@ -2,3 +2,4 @@ resources:
 - configconnector.yaml
 - dns.yaml
 - serviceusage.yaml
+- github-identity-federation.yaml
