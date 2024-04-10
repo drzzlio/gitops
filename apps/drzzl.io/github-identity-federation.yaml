@@ -14,6 +14,7 @@ spec:
   attributeMapping:
     google.subject: assertion.sub
     attribute.repository: assertion.repository
+  attributeCondition: assertion.repository_owner == 'drzzlio'
   oidc:
     issuerUri: https://token.actions.githubusercontent.com
 ---
