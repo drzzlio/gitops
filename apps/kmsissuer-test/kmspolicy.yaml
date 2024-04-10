@@ -10,7 +10,7 @@ spec:
   bindings:
     - role: roles/cloudkms.signerVerifier
       members:
-        - serviceAccount:kmsissuer-tester@gptops-playground.iam.gserviceaccount.com
+        - principalSet://iam.googleapis.com/projects/726581429530/locations/global/workloadIdentityPools/github/attribute.repository/drzzlio/kms-issuer
     - role: roles/cloudkms.viewer
       members:
-        - serviceAccount:kmsissuer-tester@gptops-playground.iam.gserviceaccount.com
+        - principalSet://iam.googleapis.com/projects/726581429530/locations/global/workloadIdentityPools/github/attribute.repository/drzzlio/kms-issuer
