@@ -95,6 +95,7 @@ async function reconcileKccServiceAccount(id) {
     'roles/editor',
     'roles/cloudkms.admin',
     'roles/iam.serviceAccountAdmin',
+    'roles/iam.workloadIdentityPoolAdmin',
   ]
 
   // Ensures a member has a particular role on a policy.
