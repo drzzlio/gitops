@@ -137,7 +137,7 @@ will be a critical success signal.
 Envoy is our proxy poison of choice, we have a controller that watches for
 cluster services to come online in the host cluster, and updates the ingress
 proxy configmap. Envoy watches the directory where the configmaps are stored
-and reloads immediately and online with any updates.
+and immediately uses xDS to dynamically update while online.
 
 Notes:
 
@@ -160,9 +160,10 @@ Everything connects via HTTP(k8s API, konnectivity), so it should theoretically
 be possible.
 
 SNI from in-cluster services will, in most cases, have an SNI of
-`kubernetes.default.svc`, while connections from user tooling and the workers
-themselves send a proper SNI configured via the k0smotron externalAddress
-config, and gets embedded in the join token and generated kubeconfigs.
+`kubernetes.default.svc` or the server's IP, while connections from user
+tooling and the workers themselves send a proper SNI configured via the
+k0smotron externalAddress config, and gets embedded in the join token and
+generated kubeconfigs.
 
 For the in-cluster service use-case, we may be able to solve by adding a custom
 entry to the service account JWT token aud claim. The k8s api-server has a flag
@@ -171,6 +172,14 @@ konnectivity in the audience as well as `https://kubernetes.default.svc`.
 
 The ingress could then validate and extract this cluster-unique aud claim and
 route based on that.
+
+Because every cluster has it's own jwks keys, it would be impractical to load
+them all into the proxy. Because SNI has no security, besides being cleartext
+they are also user-provided input and could be anything, getting routing data
+from a JWT without first validating its signature provides no regression in
+security. The target servers also do not expect prevalidated requests, they
+would normally be mounted directly on a public IP normally, the proxy is a
+router only.
 
 # Storage
 
