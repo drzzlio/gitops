@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: cachix/install-nix-action@v26
-    - run: nix develop --impure .#ci -c cdiffreport primary > cdiff.html
+    - run: nix develop --impure .#ci -c cdiffreport primary | tee cdiff.html
     - uses: actions/upload-artifact@v4
       with:
         name: cdiff
