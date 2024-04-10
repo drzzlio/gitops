@@ -19,3 +19,20 @@ spec:
     algorithm: RSA_SIGN_PSS_2048_SHA256
     protectionLevel: HSM
   importOnly: false
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: kmsissuer-test-keypolicy
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmsissuer-test
+  bindings:
+    - role: roles/cloudkms.signerVerifier
+      members:
+        - principalSet://iam.googleapis.com/projects/726581429530/locations/global/workloadIdentityPools/github/attribute.repository/drzzlio/kms-issuer
+    - role: roles/cloudkms.viewer
+      members:
+        - principalSet://iam.googleapis.com/projects/726581429530/locations/global/workloadIdentityPools/github/attribute.repository/drzzlio/kms-issuer
