@@ -8,6 +8,7 @@ resources:
 - jspolicy.yaml
 - k0smotron.yaml
 - kmsissuer-test.yaml
+- kubernetez.yaml
 - yoke.yaml
 
 patches:

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetez
+spec:
+  source:
+    path: apps/kubernetez.com
+
+  destination:
+    namespace: kubernetez
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      annotations:
+        cnrm.cloud.google.com/project-id: gptops-playground
+    syncOptions:
+    - CreateNamespace=true
