@@ -7,6 +7,7 @@ metadata:
 spec:
   location: us-central1
 ---
+# Key for the gcp-kms-issuer E2E testing, see https://github.com/drzzlio/kms-issuer/blob/main/config/testing/test-kmsissuer.yaml#L10
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
@@ -20,6 +21,7 @@ spec:
     protectionLevel: HSM
   importOnly: false
 ---
+# Gives the drzzlio/kms-issuer repo the ability to sign with the above key
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicy
 metadata:
