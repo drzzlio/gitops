@@ -21,13 +21,19 @@ spec:
 
     print(`checking if we should add a datadog version label to ${obj.kind}: ${namespace}.${name}`)
 
-    // Find first container from the MX image registry and add the label to the pod template if there is one
-    const mxcontainer = containers.find(c => c.image.includes('kong'))
-    if(mxcontainer) {
-      const tag = mxcontainer.image.split(':')[1]
-      print(`adding datadog version label to ${obj.kind} ${namespace}.${name} with image tag ${tag}`)
-      obj.spec.template.metadata.labels = { ...obj.spec.template.metadata.labels, 'tags.datadoghq.com/version': tag }
-      mutate(obj)
+    // Find first container from the desired image registry and add the label to the pod template if there is one
+    const appcontainer = containers.find(c => c.image.includes('kong'))
+    if(appcontainer) {
+      const tag = appcontainer.image.split(':')[1]
+      if(tag) {
+        print(`adding datadog version label to ${obj.kind} ${namespace}.${name} with image tag ${tag}`)
+        obj.spec.template.metadata.labels = { ...obj.spec.template.metadata.labels, 'tags.datadoghq.com/version': tag }
+        mutate(obj)
+      } else {
+        print(`container image has no tag to add datadog version label for`)
+      }
     } else {
-      allow()
+      print(`no interesting containers to add datadog version label to`)
     }
+
+    allow()
