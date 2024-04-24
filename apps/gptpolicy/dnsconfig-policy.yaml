@@ -8,13 +8,15 @@ spec:
   namespaceSelector:
     matchLabels: 
       kubernetes.io/metadata.name: gptpolicy
+  objectSelector:
+    matchLabels:
+      mx.com/patch-ndots: true
   resources:
   - deployments
   operations:
   - CREATE
   - UPDATE
   timeoutSeconds: 30
-  
   javascript: |
     print(`got event ${JSON.stringify(request)}`)
     deny()
