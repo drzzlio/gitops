@@ -3,3 +3,4 @@ resources:
 - controller.yaml
 - iampolicyproject-policy.yaml
 - dnsconfig-policy.yaml
+- policy-test-deployment.yaml
