@@ -21,8 +21,8 @@ spec:
 
     print(`checking if we should add a datadog version label to ${obj.kind}: ${namespace}.${name}`)
 
-    // Find first container from the MX image registry and add label if there is one
-    const mxcontainer = containers.map((c, index) => ({ index, image: c.image })).find(c => c.image.includes('kong'))
+    // Find first container from the MX image registry and add the label to the pod template if there is one
+    const mxcontainer = containers.find(c => c.image.includes('kong'))
     if(mxcontainer) {
       const tag = mxcontainer.image.split(':')[1]
       print(`adding datadog version label to ${obj.kind} ${namespace}.${name} with image tag ${tag}`)
