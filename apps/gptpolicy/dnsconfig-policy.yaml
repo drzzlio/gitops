@@ -18,8 +18,25 @@ spec:
   - UPDATE
   timeoutSeconds: 30
   javascript: |
-    print(`got event ${JSON.stringify(request)}`)
-    deny()
+    const obj = request.object
+    const namespace = obj.metadata.namespace
+    const name = obj.metadata.name
+
+    print(`got deployment to patch dns config: ${namespace}.${name}`)
+
+    obj.spec.template.spec.dnsPolicy = 'None';
+    obj.spec.template.spec.dnsConfig = {
+      options: [
+        { name: 'ndots', value: '2' },
+      ],
+      nameservers: [ '10.68.0.10' ],
+      searches: [
+        `${namespace}.svc.cluster.local`,
+        `svc.cluster.local`,
+        `cluster.local`,
+      ],
+    }
+    mutate(obj)
 
 #dnsPolicy: "None"
 #dnsConfig:
