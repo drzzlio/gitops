@@ -10,7 +10,7 @@ spec:
       kubernetes.io/metadata.name: gptpolicy
   objectSelector:
     matchLabels:
-      mx.com/patch-ndots: true
+      mx.com/patch-ndots: "true"
   resources:
   - deployments
   operations:
