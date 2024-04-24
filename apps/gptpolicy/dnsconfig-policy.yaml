@@ -4,6 +4,7 @@ metadata:
   name: dnsconfig.drzzl.io
 spec:
   type: Mutating
+  failurePolicy: Ignore
   scope: Namespaced
   namespaceSelector:
     matchLabels: 
