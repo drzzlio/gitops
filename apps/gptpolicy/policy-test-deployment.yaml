@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: httpbin
+  labels:
+    mx.com/patch-ndots: "true"
 spec:
   replicas: 1
   selector:
