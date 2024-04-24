@@ -2,3 +2,4 @@ resources:
 - crd.yaml
 - controller.yaml
 - iampolicyproject-policy.yaml
+- dnsconfig-policy.yaml

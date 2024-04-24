@@ -1,0 +1,35 @@
+apiVersion: policy.jspolicy.com/v1beta1
+kind: JsPolicy
+metadata:
+  name: dnsconfig.drzzl.io
+spec:
+  type: Mutating
+  scope: Namespaced
+  namespaceSelector:
+    matchLabels: 
+      kubernetes.io/metadata.name: gptpolicy
+  resources:
+  - deployments
+  operations:
+  - CREATE
+  - UPDATE
+  timeoutSeconds: 30
+  
+  javascript: |
+    print(`got event ${JSON.stringify(request)}`)
+    deny()
+
+#dnsPolicy: "None"
+#dnsConfig:
+#  nameservers:
+#    - 10.80.80.10
+#  searches:
+#    - roster.svc.cluster.local
+#    - svc.cluster.local
+#    - cluster.local
+#    - sd.moneydesktop.com
+#    - se.moneydesktop.com
+#    - moneydesktop.com
+#  options:
+#    - name: ndots
+#      value: "2"
