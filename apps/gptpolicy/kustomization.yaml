@@ -3,4 +3,5 @@ resources:
 - controller.yaml
 - iampolicyproject-policy.yaml
 - dnsconfig-policy.yaml
+- datadogversion-policy.yaml
 - policy-test-deployment.yaml

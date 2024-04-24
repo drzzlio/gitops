@@ -1,0 +1,33 @@
+apiVersion: policy.jspolicy.com/v1beta1
+kind: JsPolicy
+metadata:
+  name: datadogversion.drzzl.io
+spec:
+  type: Mutating
+  failurePolicy: Ignore
+  scope: Namespaced
+  resources:
+  - deployments
+  - rollouts
+  operations:
+  - CREATE
+  - UPDATE
+  timeoutSeconds: 30
+  javascript: |
+    const obj = request.object
+    const namespace = obj.metadata.namespace
+    const name = obj.metadata.name
+    const containers = obj.spec.template.spec.containers
+
+    print(`checking if we should add a datadog version label to ${obj.kind}: ${namespace}.${name}`)
+
+    // Find first container from the MX image registry and add label if there is one
+    const mxcontainer = containers.map((c, index) => ({ index, image: c.image })).find(c => c.image.includes('kong'))
+    if(mxcontainer) {
+      const tag = mxcontainer.image.split(':')[1]
+      print(`adding datadog version label to ${obj.kind} ${namespace}.${name} with image tag ${tag}`)
+      obj.spec.template.metadata.labels = { ...obj.spec.template.metadata.labels, 'tags.datadoghq.com/version': tag }
+      mutate(obj)
+    } else {
+      allow()
+    }
